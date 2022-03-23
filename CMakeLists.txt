@@ -573,6 +573,7 @@ unset(SYMBOLS_TO_CHECK)
 set(EVENT__HAVE_EPOLL ${EVENT__HAVE_EPOLL_CREATE})
 if(WIN32 AND NOT CYGWIN)
     set(EVENT__HAVE_WEPOLL 1)
+    set(EVENT__HAVE_PSN 1)
 endif()
 
 # Get the gethostbyname_r prototype.
@@ -893,6 +894,10 @@ if(EVENT__HAVE_WEPOLL)
     list(APPEND SRC_CORE
         epoll.c
         wepoll.c)
+endif()
+
+if(EVENT__HAVE_PSN)
+    list(APPEND SRC_CORE psn.c)
 endif()
 
 if(EVENT__HAVE_EVENT_PORTS)
@@ -1337,6 +1342,10 @@ if (NOT EVENT__DISABLE_TESTS)
         list(APPEND BACKENDS WEPOLL)
     endif()
 
+    if (EVENT__HAVE_PSN)
+        list(APPEND BACKENDS PSN)
+    endif()
+
     if (WIN32)
         list(APPEND BACKENDS WIN32)
     endif()
@@ -1485,6 +1494,7 @@ if (NOT EVENT__DISABLE_TESTS)
             "
             set EVENT_NOWIN32=
             set EVENT_NOWEPOLL=
+            set EVENT_NOPSN=
             \"${WINDOWS_CTEST_COMMAND}\"
             ")
 
