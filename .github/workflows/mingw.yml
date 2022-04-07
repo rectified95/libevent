@@ -130,7 +130,7 @@ jobs:
           elseif ( "${{ matrix.EVENT_MATRIX }}" -ne "NONE" ) {
             $EVENT_CONFIGURE_OPTIONS="-DEVENT__${{ matrix.EVENT_MATRIX }}=ON"
           }
-          $env:PATH="D:\a\_temp\msys\msys64\mingw64\bin;D:\a\_temp\msys\msys64\usr\bin;$env:PATH"
+          $env:PATH="D:\a\_temp\setup-msys2\mingw64\bin;D:\a\_temp\setup-msys2\usr\bin;$env:PATH"
           mkdir build -ea 0
           cd build
           function cmake_configure($retry)
