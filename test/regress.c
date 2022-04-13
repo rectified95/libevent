@@ -2564,6 +2564,7 @@ end:
 static void
 test_methods(void *ptr)
 {
+	printf("igorski\n");
 	const char **methods = event_get_supported_methods();
 	struct event_config *cfg = NULL;
 	struct event_base *base = NULL;

@@ -408,7 +408,7 @@ test_ratelimiting(void)
 			&cfg_tick);
 		group = ratelim_group = bufferevent_rate_limit_group_new(
 			base, group_bucket_cfg);
-		expected_total_persec = cfg_grouplimit - (cfg_group_drain / seconds_per_tick);
+		expected_total_persec = cfg_grouplimit - (cfg_group_drain / seconds_per_tick); // should account for excessive drain rate leading to negative expected total
 		expected_avg_persec = cfg_grouplimit / cfg_n_connections;
 		if (cfg_connlimit > 0 && expected_avg_persec > cfg_connlimit)
 			expected_avg_persec = cfg_connlimit;
@@ -422,7 +422,7 @@ test_ratelimiting(void)
 
 	if (expected_avg_persec > 0)
 		expected_avg_persec /= seconds_per_tick;
-	if (expected_total_persec > 0)
+	if (expected_total_persec > 0) // ?bug cuz initalized with 0 but can be assigned 0 at line 411, and then skips scaling to per sec
 		expected_total_persec /= seconds_per_tick;
 
 	bevs = calloc(cfg_n_connections, sizeof(struct bufferevent *));
