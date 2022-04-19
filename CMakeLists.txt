@@ -1406,14 +1406,14 @@ if (NOT EVENT__DISABLE_TESTS)
 
             set_tests_properties(${TEST_NAME}
                                  PROPERTIES ENVIRONMENT "${ENV_VARS}")
-            set_tests_properties(${TEST_NAME} PROPERTIES TIMEOUT 10)                                  
+            #set_tests_properties(${TEST_NAME} PROPERTIES TIMEOUT 10)                                  
 
             add_test(${TEST_NAME}_debug
                      ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/regress) #--quiet
 
             set_tests_properties(${TEST_NAME}_debug
                                  PROPERTIES ENVIRONMENT "${ENV_VARS};EVENT_DEBUG_MODE=1")
-            set_tests_properties(${TEST_NAME}_debug PROPERTIES TIMEOUT 10)                                  
+            #set_tests_properties(${TEST_NAME}_debug PROPERTIES TIMEOUT 10)                                  
         endif()
     endmacro()
 
