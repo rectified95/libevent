@@ -56,7 +56,8 @@ static int base_supports_et(struct event_base *base)
 	return
 		(!strcmp(event_base_get_method(base), "epoll") ||
 		!strcmp(event_base_get_method(base), "epoll (with changelist)") ||
-		!strcmp(event_base_get_method(base), "kqueue"));
+		!strcmp(event_base_get_method(base), "kqueue") ||
+		!strcmp(event_base_get_method(base), "psn"));
 }
 
 static void

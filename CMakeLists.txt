@@ -1406,14 +1406,14 @@ if (NOT EVENT__DISABLE_TESTS)
 
             set_tests_properties(${TEST_NAME}
                                  PROPERTIES ENVIRONMENT "${ENV_VARS}")
-            #set_tests_properties(${TEST_NAME} PROPERTIES TIMEOUT 10)                                  
+            #set_tests_properties(${TEST_NAME} PROPERTIES TIMEOUT 10)
 
             add_test(${TEST_NAME}_debug
                      ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/regress) #--quiet
 
             set_tests_properties(${TEST_NAME}_debug
                                  PROPERTIES ENVIRONMENT "${ENV_VARS};EVENT_DEBUG_MODE=1")
-            #set_tests_properties(${TEST_NAME}_debug PROPERTIES TIMEOUT 10)                                  
+            #set_tests_properties(${TEST_NAME}_debug PROPERTIES TIMEOUT 10)
         endif()
     endmacro()
 
@@ -1445,13 +1445,20 @@ if (NOT EVENT__DISABLE_TESTS)
     # Group limits, no connection limit.
     set(RL_BIN ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test-ratelim)
 
+    if (EVENT__HAVE_PSN)
+        set(IOCP_FLAG --iocp)
+    else()
+        set(IOCP_FLAG "")
+    endif()
+
     add_test(test-ratelim__group_lim
              ${RL_BIN}
              -g 30000
              -n 30
              -t 100
              --check-grouplimit 1000
-             --check-stddev 100)
+             --check-stddev 100
+             ${IOCP_FLAG})
 
     # Connection limit, no group limit.
     add_test(test-ratelim__con_lim
@@ -1460,8 +1467,9 @@ if (NOT EVENT__DISABLE_TESTS)
              -n 30
              -t 100
              --check-connlimit 50
-             --check-stddev 50)
-    set_tests_properties(test-ratelim__con_lim PROPERTIES TIMEOUT 10)            
+             --check-stddev 50
+             ${IOCP_FLAG})
+    set_tests_properties(test-ratelim__con_lim PROPERTIES TIMEOUT 10)
 
     # Connection limit and group limit.
     add_test(test-ratelim__group_con_lim
@@ -1472,7 +1480,8 @@ if (NOT EVENT__DISABLE_TESTS)
              -t 100
              --check-grouplimit 1000
              --check-connlimit 50
-             --check-stddev 50)
+             --check-stddev 50
+             ${IOCP_FLAG})
     set_tests_properties(test-ratelim__group_con_lim PROPERTIES TIMEOUT 10)
 
     # Connection limit and group limit with independent drain.
@@ -1485,7 +1494,8 @@ if (NOT EVENT__DISABLE_TESTS)
              -G 500
              --check-grouplimit 1000
              --check-connlimit 50
-             --check-stddev 50)
+             --check-stddev 50
+             ${IOCP_FLAG})
     set_tests_properties(test-ratelim__group_con_lim_drain PROPERTIES TIMEOUT 10)
 
     # Add a "make verify" target, same as for autoconf.
